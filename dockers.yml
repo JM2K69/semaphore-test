@@ -1,0 +1,62 @@
+- name: Run using a project directory
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Restart docker whoami
+      community.docker.docker_compose_v2:
+        project_src: whoami
+        state: restarted
+
+    - name: Create and start services
+      community.docker.docker_compose_v2:
+        project_src: whoami
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+
+    - name: Run `docker-compose up` again
+      community.docker.docker_compose_v2:
+        project_src: whoami
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+
+    - ansible.builtin.assert:
+        that: not output.changed
+
+    - name: Stop all services
+      community.docker.docker_compose_v2:
+        project_src: whoami
+        state: stopped
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+
+    - name: Verify that web are not running
+      ansible.builtin.assert:
+        that:
+          - output.actions.id: 'whoami-web1-1'
+          - output.actions.status: 'Stopping' 
+    
+    - name: Restart services
+      community.docker.docker_compose_v2:
+        project_src: whoami
+        state: restarted
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+
+    - name: Verify that web 
+      ansible.builtin.assert:
+        that:
+          - output.containers.Name: 'whoami-web1-1'
+          - output.containers.Networks: 'traefik_default'
+          - output.containers.State: 'running'
