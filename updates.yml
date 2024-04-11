@@ -1,5 +1,10 @@
-    - name: Upgrade all packages
-      dnf:
-       name: "*"
-       state: latest
-      become: true
+- name: Updates Packages
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Update packages
+      yum:
+        name: "*"
+        state: latest
+      besome: true
+
