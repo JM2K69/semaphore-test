@@ -1,4 +1,3 @@
----
 - name: Update all pacakges on a server
   host: all
   tasks:
