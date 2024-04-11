@@ -1,0 +1,9 @@
+---
+- name: Update all pacakges on a server
+  host: all
+  tasks:
+    - name: Upgrade all packages
+      dnf:
+       name: "*"
+       state: latest
+      become: true
