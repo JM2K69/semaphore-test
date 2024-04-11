@@ -7,12 +7,12 @@
   tasks:
     - name: Restart docker whoami
       community.docker.docker_compose_v2:
-        project_src: {{ item }}
+        project_src: "{{ item }}"
         state: restarted
 
     - name: Create and start services
       community.docker.docker_compose_v2:
-        project_src: {{ item }}
+        project_src: "{{ item }}"
       register: output
 
     - name: Show results
@@ -21,7 +21,7 @@
 
     - name: Run `docker-compose up` again
       community.docker.docker_compose_v2:
-        project_src: {{ item }}
+        project_src: "{{ item }}"
       register: output
 
     - name: Show results
@@ -33,7 +33,7 @@
 
     - name: Stop all services
       community.docker.docker_compose_v2:
-        project_src: {{ item }}
+        project_src: "{{ item }}"
         state: stopped
       register: output
 
@@ -44,12 +44,12 @@
     - name: Verify that web are not running
       ansible.builtin.assert:
         that:
-          - output.actions.id: '{{ item }}-1'
+          - output.actions.id: '"{{ item }}"-1'
           - output.actions.status: 'Stopping' 
     
     - name: Restart services
       community.docker.docker_compose_v2:
-        project_src: flashpaper
+        project_src: "{{ item }}"
         state: restarted
       register: output
 
@@ -60,6 +60,6 @@
     - name: Verify that web 
       ansible.builtin.assert:
         that:
-          - output.containers.Name: '{{ item }}-1'
+          - output.containers.Name: '"{{ item }}"-1'
           - output.containers.Networks: 'traefik_default'
           - output.containers.State: 'running'
