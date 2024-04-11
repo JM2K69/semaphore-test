@@ -3,8 +3,8 @@
   gather_facts: false
   tasks:
     - name: Update packages
-      dnf:
-        name: "*"
-        state: latest
-      besome: true
+       yum:
+         name: "*"
+         state: latest
+       become: true
 
