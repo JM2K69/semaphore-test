@@ -3,7 +3,7 @@
   gather_facts: false
   tasks:
     - name: Update packages
-      yum:
+      dnf:
         name: "*"
         state: latest
       besome: true
